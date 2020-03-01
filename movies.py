@@ -17,7 +17,7 @@ from pprint import pprint
 from datetime import datetime
 
 file_name = Path(__file__).stem
-config_path = Path(file_name + ".ini").resolve()
+config_path = str(Path(file_name + ".ini").resolve())
 fileConfig(config_path, defaults={'logfilename': Path(file_name + ".log").resolve() })
 log = logging.getLogger(__name__)
 
