@@ -17,6 +17,7 @@ import calendar
 import smtplib
 from email.mime.text import MIMEText
 
+EUR = unicodedata.lookup("EURO SIGN")
 file_name = Path(__file__).stem
 config_path = str(Path(file_name + ".ini").resolve())
 fileConfig(config_path, defaults={'logfilename': Path(file_name + ".log").resolve() })
@@ -42,7 +43,7 @@ def get_jackpot_value(html, reg):
     """
     Use regex to extract jackpotvalue from HTML
     """
-    regex = reg.format(unicodedata.lookup("EURO SIGN"))
+    regex = reg.format(EUR)
     log.debug('Getting Jackpot value from HTML using regex: '.format(regex=regex))
     jackpot_value = re.search(regex, html).group(1)
     log.debug('Jackpot value retrieved from HTML: {jv}'.format(jv=jackpot_value))
@@ -54,10 +55,10 @@ def jackpot_playable(jackpot_limit, jackpot_value):
     """
     num_jack = int(jackpot_value.replace(',',''))
     if num_jack >= jackpot_limit:
-        log.info("Play the Euromillions! It's " + jackpot_value + "!")
+        print("Play the Euromillions! It's " + EUR + jackpot_value + "!")
         return True
     else:
-        log.info("No point playing Euromillions, it's only " + jackpot_value)
+        print("No point playing Euromillions, it's only " + EUR + jackpot_value)
         return False
 
 def correct_weekday():
