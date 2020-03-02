@@ -5,6 +5,7 @@ euromillions.py by Neil Grogan, 2020
 A script to email you when the Euromillions lottery is over a threshold
 """
 import logging
+import unicodedata
 from logging.config import fileConfig
 import sys
 import configparser
@@ -37,10 +38,11 @@ def get_html(url, user_agent):
     log.debug('Retrieved HTML from {url} as {html}'.format(url=url, html=html))
     return html
 
-def get_jackpot_value(html, regex):
+def get_jackpot_value(html, reg):
     """
     Use regex to extract jackpotvalue from HTML
     """
+    regex = reg.format(unicodedata.lookup("EURO SIGN"))
     log.debug('Getting Jackpot value from HTML using regex: '.format(regex=regex))
     jackpot_value = re.search(regex, html).group(1)
     log.debug('Jackpot value retrieved from HTML: {jv}'.format(jv=jackpot_value))
