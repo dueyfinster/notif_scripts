@@ -40,7 +40,8 @@ class PDFHandler(PatternMatchingEventHandler):
 
     def on_moved(self, event):
         print('Processing: ', event)
-        if should_process(event.dest_path):
+        path = str(event.dest_path)
+        if path.endswith('pdf') and should_process(path):
             self.process(event.dest_path)
 
     def on_modified(self, event):
@@ -54,7 +55,7 @@ class PDFHandler(PatternMatchingEventHandler):
             self.process(event.src_path)
 
 def should_process(path):
-    if "Scan" or "IMG" in path and path.endswith('pdf'):
+    if "Scan" or "IMG" in path:
         return True
     return False
 
