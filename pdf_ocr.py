@@ -28,11 +28,11 @@ class PDFHandler(PatternMatchingEventHandler):
             path/to/observed/file
         """
         src_path = event.src_path
-        if event.event_type is 'modified':
+        if event.event_type is 'moved':
             src_path = event.dest_path
 
         print(src_path, event.event_type)
-        
+
         # the file will be processed there
         if "Scan" or "IMG" in event.src_path:
             now = datetime.today().strftime('%y-%m-%d')
