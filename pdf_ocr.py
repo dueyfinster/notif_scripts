@@ -7,11 +7,12 @@ A script to run convert PDFs from scanner to PDF/A with embedded text via OCR
 import sys
 from datetime import datetime
 from pathlib import Path
+import subprocess
 import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-import ocrmypdf
+#import ocrmypdf
 
 
 class PDFHandler(PatternMatchingEventHandler):
@@ -27,10 +28,12 @@ class PDFHandler(PatternMatchingEventHandler):
             path/to/observed/file
         """
         # the file will be processed there
-        if "Scan" in event.src_path:
+        if "Scan" or "IMG" in event.src_path:
             now = datetime.today().strftime('%y-%m-%d')
-            new_path = Path(event.src_path).parent.joinpath(now +' output.pdf').resolve()
-            ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
+            new_path = str(Path(event.src_path).parent.joinpath(now +'.pdf').resolve())
+            #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
+            cur_path = str(Path(event.src_path).resolve())
+            subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
         print(event.src_path, event.event_type)
 
     def on_modified(self, event):
