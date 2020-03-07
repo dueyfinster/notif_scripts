@@ -40,14 +40,14 @@ class PDFHandler(PatternMatchingEventHandler):
         if should_process(src_path):
             print('Processing: ', src_path)
             now = datetime.today().strftime('%y-%m-%d')
-            par_dir = str(Path(src_path).parents)
-            new_path = str(tempfile.gettempdir()) + '/' + now +'.pdf'
+            par_dir = str(Path(Path(src_path).parents).joinpath(now +' output.pdf'))
+            new_path = str(tempfile.gettempdir()) + '/' + 'temp.pdf'
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(src_path).resolve())
             s = subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
 
             if s.returncode == 0:
-                os.rename(new_path,  par_dir + '/' + now +'.pdf')
+                os.rename(new_path,  par_dir)
         else:
             print('Noting to process', src_path)
         
