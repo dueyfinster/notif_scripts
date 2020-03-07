@@ -30,7 +30,7 @@ class PDFHandler(PatternMatchingEventHandler):
         # the file will be processed there
         if "Scan" or "IMG" in event.src_path:
             now = datetime.today().strftime('%y-%m-%d')
-            new_path = str(Path(event.src_path).parent.joinpath(now +'.pdf'))
+            new_path = str(Path(event.src_path).parent) + now +' output.pdf'
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(event.src_path).resolve())
             subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
