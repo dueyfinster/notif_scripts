@@ -3,8 +3,17 @@
 pdf_ocr.py by Neil Grogan, 2020
 
 A script to run convert PDFs from scanner to PDF/A with embedded text via OCR
+
+Prerequisities:
+===============
+* Install Docker
+* Install watchdog Python library: $ pip install watchdog
+$ docker pull jbarlow83/ocrmypdf
+$ docker tag jbarlow83/ocrmypdf ocrmypdf
 """
 import sys
+import os
+import tempfile
 from datetime import datetime
 from pathlib import Path
 import subprocess
@@ -31,10 +40,14 @@ class PDFHandler(PatternMatchingEventHandler):
         if should_process(src_path):
             print('Processing: ', src_path)
             now = datetime.today().strftime('%y-%m-%d')
-            new_path = str(Path(src_path).parent) + '/' +now +'.pdf'
+            par_dir = str(Path(src_path).parent)
+            new_path = str(tempfile.gettempdir()) + '/' + now +'.pdf'
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(src_path).resolve())
-            subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
+            s = subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
+
+            if s.returncode == 0:
+                os.rename("path/to/current/file.foo",  par_dir + '/' + now +'.pdf')
         else:
             print('Noting to process', src_path)
         
