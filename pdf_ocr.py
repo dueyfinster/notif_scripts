@@ -39,14 +39,17 @@ class PDFHandler(PatternMatchingEventHandler):
         
 
     def on_moved(self, event):
+        print('Processing: ', event)
         if should_process(event.dest_path):
             self.process(event.dest_path)
 
     def on_modified(self, event):
+        print('Processing: ', event)
         if should_process(event.src_path):
             self.process(event.src_path)
 
     def on_created(self, event):
+        print('Processing: ', event)
         if should_process(event.src_path):
             self.process(event.src_path)
 
