@@ -36,7 +36,7 @@ class PDFHandler(PatternMatchingEventHandler):
         print(src_path, event.event_type)
 
         # the file will be processed there
-        if "Scan" or "IMG" in event.src_path:
+        if should_process(src_path):
             now = datetime.today().strftime('%y-%m-%d')
             new_path = str(Path(src_path).parent) + '/' +now +'.pdf'
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
@@ -45,7 +45,8 @@ class PDFHandler(PatternMatchingEventHandler):
         
 
     def on_moved(self, event):
-        self.process(event)
+        if should_process(event.dest_path):
+            self.process(event)
 
     def on_modified(self, event):
         self.process(event)
@@ -53,6 +54,10 @@ class PDFHandler(PatternMatchingEventHandler):
     def on_created(self, event):
         self.process(event)
 
+def should_process(path):
+    if "Scan" or "IMG" in path:
+        return True
+    return False
 
 if __name__ == "__main__":
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
