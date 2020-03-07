@@ -27,14 +27,23 @@ class PDFHandler(PatternMatchingEventHandler):
         event.src_path
             path/to/observed/file
         """
+        src_path = event.src_path
+        if event.event_type is 'modified':
+            src_path = event.dest_path
+
+        print(src_path, event.event_type)
+        
         # the file will be processed there
         if "Scan" or "IMG" in event.src_path:
             now = datetime.today().strftime('%y-%m-%d')
-            new_path = str(Path(event.src_path).parent.joinpath(now +'.pdf').resolve())
+            new_path = str(Path(src_path).parent.joinpath(now +'.pdf').resolve())
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
-            cur_path = str(Path(event.src_path).resolve())
+            cur_path = str(Path(src_path).resolve())
             subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
-        print(event.src_path, event.event_type)
+        
+
+    def on_moved(self, event):
+        self.process(event)
 
     def on_modified(self, event):
         self.process(event)
