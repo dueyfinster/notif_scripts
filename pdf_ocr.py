@@ -18,7 +18,7 @@ from watchdog.events import PatternMatchingEventHandler
 class PDFHandler(PatternMatchingEventHandler):
     patterns = ["*.PDF", "*.pdf"]
 
-    def process(self, event):
+    def process(self, src_path):
         """
         event.event_type 
             'modified' | 'created' | 'moved' | 'deleted'
@@ -27,13 +27,7 @@ class PDFHandler(PatternMatchingEventHandler):
         event.src_path
             path/to/observed/file
         """
-        src_path = event.src_path
-        if event.event_type is 'moved':
-            print(src_path, event.dest_path)
-            src_path = event.dest_path
-            
-
-        print(src_path, event.event_type)
+        print('Processing: ', src_path)
 
         # the file will be processed there
         if should_process(src_path):
@@ -46,13 +40,15 @@ class PDFHandler(PatternMatchingEventHandler):
 
     def on_moved(self, event):
         if should_process(event.dest_path):
-            self.process(event)
+            self.process(event.dest_path)
 
     def on_modified(self, event):
-        self.process(event)
+        if should_process(event.src_path):
+            self.process(event.src_path)
 
     def on_created(self, event):
-        self.process(event)
+        if should_process(event.src_path):
+            self.process(event.src_path)
 
 def should_process(path):
     if "Scan" or "IMG" in path:
