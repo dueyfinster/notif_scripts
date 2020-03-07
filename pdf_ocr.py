@@ -47,7 +47,7 @@ class PDFHandler(PatternMatchingEventHandler):
             s = subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
 
             if s.returncode == 0:
-                os.rename("path/to/current/file.foo",  par_dir + '/' + now +'.pdf')
+                os.rename(new_path,  par_dir + '/' + now +'.pdf')
         else:
             print('Noting to process', src_path)
         
