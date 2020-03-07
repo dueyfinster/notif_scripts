@@ -40,7 +40,7 @@ class PDFHandler(PatternMatchingEventHandler):
         if should_process(src_path):
             print('Processing: ', src_path)
             now = datetime.today().strftime('%y-%m-%d')
-            par_dir = str(Path(src_path).parent)
+            par_dir = str(Path(src_path).parents)
             new_path = str(tempfile.gettempdir()) + '/' + now +'.pdf'
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(src_path).resolve())
