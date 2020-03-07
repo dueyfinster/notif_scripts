@@ -29,7 +29,9 @@ class PDFHandler(PatternMatchingEventHandler):
         """
         src_path = event.src_path
         if event.event_type is 'moved':
+            print(src_path, event.dest_path)
             src_path = event.dest_path
+            
 
         print(src_path, event.event_type)
 
