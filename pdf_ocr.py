@@ -13,6 +13,7 @@ $ docker tag jbarlow83/ocrmypdf ocrmypdf
 """
 import sys
 import os
+import shutil
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -42,13 +43,13 @@ class PDFHandler(PatternMatchingEventHandler):
             now = datetime.today().strftime('%y-%m-%d')
             par_dir = Path(src_path).parent.resolve()
             final_dir = str(par_dir.joinpath(now +'output.pdf'))
-            new_path = str(par_dir) + '/' + 'temp.pdf'
+            tmp_path = str(tempfile.NamedTemporaryFile().name)
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(src_path).resolve())
-            s = subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >\""+new_path+"\""], shell=True)
+            s = subprocess.run(["docker run --rm -i ocrmypdf - - <" + cur_path + " >"+tmp_path], shell=True)
 
             if s.returncode == 0:
-                os.rename(new_path,  final_dir)
+                shutil.move(tmp_path,  final_dir)
         else:
             print('Noting to process', src_path)
         
