@@ -47,7 +47,7 @@ class PDFHandler(PatternMatchingEventHandler):
             tmp_path = str(tempfile.NamedTemporaryFile().name)
             #ocrmypdf.ocr(event.src_path, new_path, force_ocr=True,)
             cur_path = str(Path(src_path).resolve())
-            s = subprocess.run(["docker run --rm -i ocrmypdf --deskew - - <" + cur_path + " >"+tmp_path], shell=True)
+            s = subprocess.run(["docker run --rm -i ocrmypdf --force-ocr --deskew - - <" + cur_path + " >"+tmp_path], shell=True)
 
             if s.returncode == 0:
                 shutil.move(tmp_path,  final_dir)
