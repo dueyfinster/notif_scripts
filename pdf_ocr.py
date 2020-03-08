@@ -72,11 +72,9 @@ class PDFHandler(PatternMatchingEventHandler):
             self.process(event.src_path)
 
 def should_process(path):
-    p = str(path)
+    p = str(Path(path).stem)
     if path.endswith('pdf') or path.endswith('PDF'):
-        if "Scan" in p:
-            return True
-        elif "IMG" in p:
+        if p.startswith('Scan') or p.startswith('IMG'):
             return True
     return False
 
