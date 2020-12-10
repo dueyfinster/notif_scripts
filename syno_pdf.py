@@ -80,7 +80,7 @@ for dir_name, subdirs, file_list in os.walk(start_dir):
                 stderr=subprocess.PIPE,
                 check=False,
             )
-        logging.info(proc.stderr.read())
+        logging.info(proc.stderr.decode('utf-8'))
         os.chmod(full_path_ocr, 0o664)
         os.chmod(full_path, 0o664)
         full_path_ocr_archive = sys.argv[2]
