@@ -37,8 +37,8 @@ log_file = script_dir + '/' + timestamp + 'ocrmypdf.log'
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(message)s',
-    filename=log_file,
-    filemode='w',
+    # filename=log_file,
+    # filemode='w',
 )
 
 if len(sys.argv) > 1:
