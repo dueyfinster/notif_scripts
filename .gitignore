@@ -6,6 +6,7 @@ __pycache__/
 *.json
 # C extensions
 *.so
+*.sql
 
 # Distribution / packaging
 *.ini
