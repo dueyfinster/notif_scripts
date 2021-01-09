@@ -10,4 +10,4 @@ restore(){
     cat *.sql | docker exec -i "$CONTAINER" psql -U "$USER"
 }
 
-backup()
+backup
