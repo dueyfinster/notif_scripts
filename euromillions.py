@@ -96,7 +96,7 @@ def send_email(num_jack):
 
     message['From'] = 'Euromillions ' + fro
     message['To'] = 'Euromillions ' + to
-    message['Subject'] = 'Euromillions Jackpot is €{num_jack}'.format(num_jack=num_jack)
+    message['Subject'] = 'Euromillions Jackpot is €{num_jack} million'.format(num_jack=num_jack)
 
     msg_full = message.as_string()
 
