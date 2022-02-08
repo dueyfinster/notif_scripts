@@ -46,7 +46,13 @@ def get_jackpot_value(html, reg):
     """
     regex = reg.format(EUR)
     log.debug('Getting Jackpot value from HTML using regex: '.format(regex=regex))
-    jackpot_value = re.search(regex, html).group(1)
+
+    try:
+        jackpot_value = re.search(regex, html).group(1)
+    except AttributeError:
+        log.error('Regex was not matched!')
+        raise
+
     log.debug('Jackpot value retrieved from HTML: {jv}'.format(jv=jackpot_value))
     return jackpot_value
 
