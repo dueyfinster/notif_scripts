@@ -51,7 +51,7 @@ for dir_name, subdirs, file_list in os.walk(start_dir):
     os.chdir(dir_name)
     for filename in file_list:
         file_stem, file_ext = os.path.splitext(filename)
-        if file_ext != '.pdf':
+        if file_ext != '.pdf' and file_ext != '.PDF':
             continue
         full_path = os.path.join(dir_name, filename)
         timestamp_ocr = time.strftime("%Y-%m-%d-%H%M_OCR_")
